@@ -13,6 +13,9 @@ CREATE TABLE users (
   avatar_url VARCHAR(500) DEFAULT NULL,
   country_code CHAR(2) DEFAULT NULL,
   date_of_birth DATE DEFAULT NULL,
+  email_verified_at DATETIME DEFAULT NULL,
+  username_change_locked_until DATETIME DEFAULT NULL,
+  password_changed_at DATETIME DEFAULT NULL,
   account_status ENUM('active','banned','deleted','pending') NOT NULL DEFAULT 'pending',
   last_login_at DATETIME NULL,
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -231,3 +234,121 @@ CREATE TABLE audit_logs (
   KEY ix_audit_logs_entity_type (entity_type)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE cars (
+  car_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  car_code VARCHAR(60) NOT NULL,
+  car_name VARCHAR(120) NOT NULL,
+  brand_name VARCHAR(100) NOT NULL,
+  model_year SMALLINT UNSIGNED NOT NULL,
+  drivetrain ENUM('fwd','rwd','awd','4wd') NOT NULL DEFAULT 'rwd',
+  rarity ENUM('common','rare','epic','legendary') NOT NULL DEFAULT 'common',
+  default_unlocked TINYINT(1) NOT NULL DEFAULT 0,
+  coin_price INT UNSIGNED NOT NULL DEFAULT 0,
+  cash_price INT UNSIGNED NOT NULL DEFAULT 0,
+  requires_coin_and_cash TINYINT(1) NOT NULL DEFAULT 0,
+  top_speed_kph INT UNSIGNED NOT NULL DEFAULT 0,
+  horsepower INT UNSIGNED NOT NULL DEFAULT 0,
+  acceleration_rating TINYINT UNSIGNED NOT NULL DEFAULT 0,
+  handling_rating TINYINT UNSIGNED NOT NULL DEFAULT 0,
+  braking_rating TINYINT UNSIGNED NOT NULL DEFAULT 0,
+  image_url VARCHAR(500) DEFAULT NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (car_id),
+  UNIQUE KEY uq_cars_code (car_code),
+  KEY ix_cars_rarity (rarity),
+  KEY ix_cars_brand_name (brand_name)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE user_garage (
+  garage_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  user_id BIGINT UNSIGNED NOT NULL,
+  car_id BIGINT UNSIGNED NOT NULL,
+  acquired_via ENUM('default','coin','cash','both','reward','event') NOT NULL DEFAULT 'default',
+  purchase_coin_cost INT UNSIGNED NOT NULL DEFAULT 0,
+  purchase_cash_cost INT UNSIGNED NOT NULL DEFAULT 0,
+  is_owned TINYINT(1) NOT NULL DEFAULT 1,
+  is_equipped TINYINT(1) NOT NULL DEFAULT 0,
+  acquired_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (garage_id),
+  UNIQUE KEY uq_user_garage_user_car (user_id, car_id),
+  KEY ix_user_garage_car_id (car_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE car_purchase_history (
+  purchase_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  user_id BIGINT UNSIGNED NOT NULL,
+  car_id BIGINT UNSIGNED NOT NULL,
+  purchase_currency ENUM('coin','cash','both','free') NOT NULL DEFAULT 'free',
+  coin_spent INT UNSIGNED NOT NULL DEFAULT 0,
+  cash_spent INT UNSIGNED NOT NULL DEFAULT 0,
+  purchased_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (purchase_id),
+  KEY ix_car_purchase_history_user_id (user_id),
+  KEY ix_car_purchase_history_car_id (car_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE username_change_history (
+  change_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  user_id BIGINT UNSIGNED NOT NULL,
+  old_username VARCHAR(50) NOT NULL,
+  new_username VARCHAR(50) NOT NULL,
+  changed_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  next_allowed_change_at DATETIME NOT NULL,
+  PRIMARY KEY (change_id),
+  KEY ix_username_change_history_user_id (user_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE account_backup_codes (
+  code_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  user_id BIGINT UNSIGNED NOT NULL,
+  code_hash VARCHAR(255) NOT NULL,
+  code_label VARCHAR(50) DEFAULT NULL,
+  is_used TINYINT(1) NOT NULL DEFAULT 0,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  used_at DATETIME DEFAULT NULL,
+  PRIMARY KEY (code_id),
+  UNIQUE KEY uq_account_backup_codes_user_hash (user_id, code_hash)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE password_reset_tokens (
+  reset_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  user_id BIGINT UNSIGNED NOT NULL,
+  token_hash VARCHAR(255) NOT NULL,
+  requested_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  expires_at DATETIME NOT NULL,
+  used_at DATETIME DEFAULT NULL,
+  ip_address VARCHAR(45) DEFAULT NULL,
+  PRIMARY KEY (reset_id),
+  UNIQUE KEY uq_password_reset_tokens_user_hash (user_id, token_hash)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE email_verification_tokens (
+  verification_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  user_id BIGINT UNSIGNED NOT NULL,
+  token_hash VARCHAR(255) NOT NULL,
+  requested_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  expires_at DATETIME NOT NULL,
+  verified_at DATETIME DEFAULT NULL,
+  PRIMARY KEY (verification_id),
+  UNIQUE KEY uq_email_verification_tokens_user_hash (user_id, token_hash)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT INTO cars (
+  car_code, car_name, brand_name, model_year, drivetrain, rarity, default_unlocked,
+  coin_price, cash_price, requires_coin_and_cash, top_speed_kph, horsepower,
+  acceleration_rating, handling_rating, braking_rating, image_url
+) VALUES
+('starter-vortex', 'Vortex GT', 'Aarham Motors', 2024, 'rwd', 'common', 1, 0, 0, 0, 220, 310, 62, 58, 60, NULL),
+('starter-drift', 'Driftline S', 'Aarham Motors', 2024, 'rwd', 'common', 1, 0, 0, 0, 210, 280, 60, 61, 58, NULL),
+('forest-sprint', 'Forest Sprint', 'Aarham Motors', 2025, 'awd', 'rare', 0, 1200, 0, 0, 245, 380, 73, 67, 69, NULL),
+('midnight-gt', 'Midnight GT', 'Aarham Motors', 2025, 'rwd', 'rare', 0, 1800, 0, 0, 255, 420, 76, 66, 64, NULL),
+('eclipse-rs', 'Eclipse RS', 'Aarham Motors', 2025, 'awd', 'epic', 0, 2200, 15, 1, 270, 520, 82, 72, 70, NULL),
+('thunder-x', 'Thunder X', 'Aarham Motors', 2026, 'awd', 'epic', 0, 2600, 20, 1, 285, 610, 85, 70, 74, NULL),
+('phoenix-r', 'Phoenix R', 'Aarham Motors', 2026, 'rwd', 'legendary', 0, 0, 35, 0, 315, 760, 92, 74, 78, NULL),
+('aurora-t', 'Aurora T', 'Aarham Motors', 2026, '4wd', 'legendary', 0, 3200, 45, 1, 330, 880, 95, 78, 81, NULL),
+('ridge-7', 'Ridge 7', 'Aarham Motors', 2023, 'awd', 'common', 1, 0, 0, 0, 205, 240, 55, 57, 56, NULL),
+('shadow-9', 'Shadow 9', 'Aarham Motors', 2024, 'rwd', 'rare', 0, 1400, 10, 1, 250, 390, 71, 63, 65, NULL),
+('storm-sv', 'Storm SV', 'Aarham Motors', 2025, 'awd', 'epic', 0, 2800, 25, 1, 295, 640, 88, 75, 76, NULL),
+('nova-z', 'Nova Z', 'Aarham Motors', 2026, 'rwd', 'legendary', 0, 4000, 50, 1, 350, 950, 98, 80, 84, NULL);

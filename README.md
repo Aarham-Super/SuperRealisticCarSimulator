@@ -13,6 +13,11 @@ SuperRealisticCarSimulator is a .NET 10 ASP.NET Core website for a realistic dri
 - Realistic simulator-themed landing page
 - Custom logo and favicon
 - Separate EXE and ZIP download links
+- Account flow for username/password login with email verification
+- Username change cooldown of once per day
+- Backup codes for recovery and password reset
+- Backup codes can be exported as a TXT recovery file
+- Large car catalog with coin, cash, or mixed unlock rules
 - Copyright text: "All made by Aarham"
 - Apache License 2.0
 
@@ -32,6 +37,7 @@ This repo uses two config files:
 - Schema files: `sql/mysql/01_core.sql` and `sql/sqlite/01_backup.sql`
 - The backup database is meant to keep the site functioning if MySQL is unavailable
 - When the main MySQL system is healthy again, it can resume as the primary source
+- Car catalog, account security, and username change tables are included in both schemas
 
 ## Build
 

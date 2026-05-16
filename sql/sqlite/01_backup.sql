@@ -9,6 +9,9 @@ CREATE TABLE IF NOT EXISTS users (
   avatar_url TEXT,
   country_code TEXT,
   date_of_birth TEXT,
+  email_verified_at TEXT,
+  username_change_locked_until TEXT,
+  password_changed_at TEXT,
   account_status TEXT NOT NULL DEFAULT 'pending',
   last_login_at TEXT,
   created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -207,6 +210,119 @@ CREATE TABLE IF NOT EXISTS audit_logs (
   created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS cars (
+  car_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  car_code TEXT NOT NULL UNIQUE,
+  car_name TEXT NOT NULL,
+  brand_name TEXT NOT NULL,
+  model_year INTEGER NOT NULL,
+  drivetrain TEXT NOT NULL DEFAULT 'rwd',
+  rarity TEXT NOT NULL DEFAULT 'common',
+  default_unlocked INTEGER NOT NULL DEFAULT 0,
+  coin_price INTEGER NOT NULL DEFAULT 0,
+  cash_price INTEGER NOT NULL DEFAULT 0,
+  requires_coin_and_cash INTEGER NOT NULL DEFAULT 0,
+  top_speed_kph INTEGER NOT NULL DEFAULT 0,
+  horsepower INTEGER NOT NULL DEFAULT 0,
+  acceleration_rating INTEGER NOT NULL DEFAULT 0,
+  handling_rating INTEGER NOT NULL DEFAULT 0,
+  braking_rating INTEGER NOT NULL DEFAULT 0,
+  image_url TEXT,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS user_garage (
+  garage_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER NOT NULL,
+  car_id INTEGER NOT NULL,
+  acquired_via TEXT NOT NULL DEFAULT 'default',
+  purchase_coin_cost INTEGER NOT NULL DEFAULT 0,
+  purchase_cash_cost INTEGER NOT NULL DEFAULT 0,
+  is_owned INTEGER NOT NULL DEFAULT 1,
+  is_equipped INTEGER NOT NULL DEFAULT 0,
+  acquired_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE (user_id, car_id),
+  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+  FOREIGN KEY (car_id) REFERENCES cars(car_id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS car_purchase_history (
+  purchase_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER NOT NULL,
+  car_id INTEGER NOT NULL,
+  purchase_currency TEXT NOT NULL DEFAULT 'free',
+  coin_spent INTEGER NOT NULL DEFAULT 0,
+  cash_spent INTEGER NOT NULL DEFAULT 0,
+  purchased_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+  FOREIGN KEY (car_id) REFERENCES cars(car_id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS username_change_history (
+  change_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER NOT NULL,
+  old_username TEXT NOT NULL,
+  new_username TEXT NOT NULL,
+  changed_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  next_allowed_change_at TEXT NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS account_backup_codes (
+  code_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER NOT NULL,
+  code_hash TEXT NOT NULL,
+  code_label TEXT,
+  is_used INTEGER NOT NULL DEFAULT 0,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  used_at TEXT,
+  UNIQUE (user_id, code_hash),
+  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS password_reset_tokens (
+  reset_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER NOT NULL,
+  token_hash TEXT NOT NULL,
+  requested_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  expires_at TEXT NOT NULL,
+  used_at TEXT,
+  ip_address TEXT,
+  UNIQUE (user_id, token_hash),
+  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS email_verification_tokens (
+  verification_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER NOT NULL,
+  token_hash TEXT NOT NULL,
+  requested_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  expires_at TEXT NOT NULL,
+  verified_at TEXT,
+  UNIQUE (user_id, token_hash),
+  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+);
+
+INSERT OR IGNORE INTO cars (
+  car_code, car_name, brand_name, model_year, drivetrain, rarity, default_unlocked,
+  coin_price, cash_price, requires_coin_and_cash, top_speed_kph, horsepower,
+  acceleration_rating, handling_rating, braking_rating, image_url
+) VALUES
+('starter-vortex', 'Vortex GT', 'Aarham Motors', 2024, 'rwd', 'common', 1, 0, 0, 0, 220, 310, 62, 58, 60, NULL),
+('starter-drift', 'Driftline S', 'Aarham Motors', 2024, 'rwd', 'common', 1, 0, 0, 0, 210, 280, 60, 61, 58, NULL),
+('forest-sprint', 'Forest Sprint', 'Aarham Motors', 2025, 'awd', 'rare', 0, 1200, 0, 0, 245, 380, 73, 67, 69, NULL),
+('midnight-gt', 'Midnight GT', 'Aarham Motors', 2025, 'rwd', 'rare', 0, 1800, 0, 0, 255, 420, 76, 66, 64, NULL),
+('eclipse-rs', 'Eclipse RS', 'Aarham Motors', 2025, 'awd', 'epic', 0, 2200, 15, 1, 270, 520, 82, 72, 70, NULL),
+('thunder-x', 'Thunder X', 'Aarham Motors', 2026, 'awd', 'epic', 0, 2600, 20, 1, 285, 610, 85, 70, 74, NULL),
+('phoenix-r', 'Phoenix R', 'Aarham Motors', 2026, 'rwd', 'legendary', 0, 0, 35, 0, 315, 760, 92, 74, 78, NULL),
+('aurora-t', 'Aurora T', 'Aarham Motors', 2026, '4wd', 'legendary', 0, 3200, 45, 1, 330, 880, 95, 78, 81, NULL),
+('ridge-7', 'Ridge 7', 'Aarham Motors', 2023, 'awd', 'common', 1, 0, 0, 0, 205, 240, 55, 57, 56, NULL),
+('shadow-9', 'Shadow 9', 'Aarham Motors', 2024, 'rwd', 'rare', 0, 1400, 10, 1, 250, 390, 71, 63, 65, NULL),
+('storm-sv', 'Storm SV', 'Aarham Motors', 2025, 'awd', 'epic', 0, 2800, 25, 1, 295, 640, 88, 75, 76, NULL),
+('nova-z', 'Nova Z', 'Aarham Motors', 2026, 'rwd', 'legendary', 0, 4000, 50, 1, 350, 950, 98, 80, 84, NULL);
+
 CREATE TABLE IF NOT EXISTS database_health (
   health_id INTEGER PRIMARY KEY AUTOINCREMENT,
   database_role TEXT NOT NULL,
@@ -245,4 +361,3 @@ CREATE TABLE IF NOT EXISTS feature_flags (
   enabled INTEGER NOT NULL DEFAULT 1,
   updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
-
