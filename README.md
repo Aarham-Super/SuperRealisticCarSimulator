@@ -30,6 +30,14 @@ This repo uses two config files:
 
 `appsettings.json` is ignored by Git so private values stay on your machine.
 
+MonsterASP deployment values:
+
+- Site ID: `site69322`
+- Site domain: `supercarsim.runasp.net`
+- Site server: `site69322.siteasp.net`
+- MySQL database: `db52453`
+- MySQL host: `db52453.databaseasp.net`
+
 ## Databases
 
 - Primary database: MySQL
@@ -38,6 +46,7 @@ This repo uses two config files:
 - The backup database is meant to keep the site functioning if MySQL is unavailable
 - When the main MySQL system is healthy again, it can resume as the primary source
 - Car catalog, account security, and username change tables are included in both schemas
+- The safe Git config uses the MonsterASP host/database values with the password left as a placeholder
 
 ## Build
 
