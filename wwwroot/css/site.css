@@ -1,0 +1,458 @@
+html {
+  font-size: 15px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+:root {
+  color-scheme: dark;
+  --bg: #08110d;
+  --bg-soft: #101a16;
+  --panel: rgba(14, 24, 20, 0.82);
+  --panel-strong: rgba(20, 35, 29, 0.95);
+  --line: rgba(255, 255, 255, 0.08);
+  --text: #edf3ef;
+  --muted: #a4b3aa;
+  --accent: #9be28d;
+  --accent-strong: #6abf57;
+  --accent-dark: #1f5b2d;
+  --shadow: 0 28px 80px rgba(0, 0, 0, 0.38);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+  background:
+    radial-gradient(circle at top left, rgba(100, 160, 104, 0.22), transparent 30%),
+    radial-gradient(circle at bottom right, rgba(60, 102, 78, 0.28), transparent 35%),
+    linear-gradient(180deg, #0d1712 0%, #060a08 100%);
+}
+
+body {
+  margin: 0;
+  min-height: 100%;
+  color: var(--text);
+  background:
+    linear-gradient(180deg, rgba(6, 9, 8, 0.82), rgba(6, 9, 8, 0.92)),
+    url("/images/pine-line.svg") bottom center/cover no-repeat,
+    linear-gradient(180deg, #0a1210 0%, #050706 100%);
+  font-family: "Bahnschrift", "Aptos", "Segoe UI", sans-serif;
+}
+
+a {
+  color: inherit;
+}
+
+.page-shell {
+  width: min(1180px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 28px 0 72px;
+}
+
+.site-nav {
+  background: linear-gradient(180deg, rgba(7, 12, 10, 0.94), rgba(9, 18, 14, 0.82));
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(18px);
+}
+
+.navbar-brand,
+.nav-link {
+  color: var(--text) !important;
+  letter-spacing: 0.04em;
+}
+
+.brand-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-logo,
+.hero-logo {
+  display: block;
+  object-fit: contain;
+}
+
+.brand-logo {
+  width: 42px;
+  height: 42px;
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.35));
+}
+
+.hero-brand-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  margin-bottom: 18px;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.03);
+  box-shadow: var(--shadow);
+}
+
+.hero-logo {
+  width: 62px;
+  height: 62px;
+  filter: drop-shadow(0 12px 26px rgba(0, 0, 0, 0.35));
+}
+
+.brand-line {
+  margin: 0;
+  color: var(--text);
+  font-size: 0.98rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.navbar-brand {
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.nav-link {
+  opacity: 0.85;
+}
+
+.nav-link:hover,
+.nav-link:focus {
+  opacity: 1;
+}
+
+.hero-shell {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 28px;
+  align-items: center;
+  padding: 28px 0 22px;
+}
+
+.hero-copy {
+  padding: 24px 6px 24px 0;
+}
+
+.eyebrow {
+  margin: 0 0 10px;
+  color: var(--accent);
+  font-size: 0.86rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.hero-copy h1,
+.section-heading h2,
+.download-panel h2,
+.legal-page h1 {
+  margin: 0;
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+}
+
+.hero-copy h1 {
+  max-width: 11ch;
+  font-size: clamp(3rem, 8vw, 5.8rem);
+}
+
+.lead {
+  max-width: 62ch;
+  margin: 18px 0 0;
+  color: var(--muted);
+  font-size: 1.08rem;
+  line-height: 1.75;
+}
+
+.action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 28px;
+}
+
+.btn-primary,
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 18px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 700;
+  transition: transform 140ms ease, box-shadow 140ms ease, background 140ms ease;
+}
+
+.btn-primary {
+  color: #07110b;
+  background: linear-gradient(180deg, #b6f0a9, #79cf66);
+  box-shadow: 0 18px 30px rgba(89, 152, 76, 0.24);
+}
+
+.btn-secondary {
+  color: var(--text);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.btn-primary:hover,
+.btn-secondary:hover {
+  transform: translateY(-1px);
+  color: inherit;
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 28px;
+}
+
+.stat-grid article,
+.feature-card,
+.download-card,
+.legal-card,
+.visual-frame {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(18px);
+}
+
+.stat-grid article {
+  padding: 16px 18px;
+  border-radius: 20px;
+}
+
+.stat-value {
+  display: block;
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+.stat-label {
+  display: block;
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 0.93rem;
+  line-height: 1.4;
+}
+
+.hero-visual {
+  position: relative;
+  min-height: 620px;
+  display: grid;
+  place-items: center;
+}
+
+.visual-frame {
+  width: 100%;
+  border-radius: 30px;
+  padding: 26px;
+  background:
+    radial-gradient(circle at top, rgba(180, 232, 171, 0.18), transparent 30%),
+    linear-gradient(180deg, rgba(18, 30, 24, 0.95), rgba(10, 16, 13, 0.92));
+}
+
+.visual-frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 430px;
+  object-fit: contain;
+  filter: drop-shadow(0 24px 40px rgba(0, 0, 0, 0.42));
+}
+
+.visual-tag {
+  display: inline-flex;
+  margin-top: 18px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(8, 15, 12, 0.75);
+  color: var(--accent);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.tree-strip {
+  position: absolute;
+  inset: auto 10% -16px;
+  height: 120px;
+  border-radius: 999px;
+  background:
+    linear-gradient(180deg, rgba(67, 103, 77, 0.25), rgba(7, 12, 9, 0.72)),
+    url("/images/pine-line.svg") center/cover no-repeat;
+  filter: blur(0.2px);
+  opacity: 0.95;
+}
+
+.feature-section,
+.download-panel,
+.legal-page {
+  margin-top: 34px;
+}
+
+.section-heading h2,
+.download-panel h2,
+.legal-page h1 {
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+
+.section-heading p {
+  margin: 0 0 10px;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 20px;
+}
+
+.feature-card,
+.legal-card,
+.download-card {
+  border-radius: 24px;
+}
+
+.feature-card {
+  padding: 22px;
+}
+
+.feature-card h3,
+.legal-card h2 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1.25rem;
+}
+
+.feature-card p,
+.download-panel p,
+.legal-card p,
+.download-card span {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.download-panel {
+  display: grid;
+  grid-template-columns: 1.1fr repeat(2, minmax(0, 0.9fr));
+  gap: 20px;
+  align-items: stretch;
+  padding: 26px;
+  border: 1px solid var(--line);
+  border-radius: 28px;
+  background: linear-gradient(180deg, rgba(13, 22, 18, 0.88), rgba(9, 14, 11, 0.96));
+}
+
+.download-card {
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+}
+
+.download-card strong {
+  font-size: 1.2rem;
+}
+
+.full-width {
+  width: 100%;
+  margin-top: 6px;
+}
+
+.legal-page {
+  max-width: 780px;
+}
+
+.legal-card {
+  padding: 20px;
+  margin-top: 16px;
+}
+
+.site-footer {
+  border-top: 1px solid var(--line);
+  background: rgba(7, 11, 9, 0.88);
+}
+
+.footer-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 0;
+  color: var(--muted);
+}
+
+.footer-links {
+  display: inline-flex;
+  gap: 18px;
+  align-items: center;
+}
+
+.footer-row a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.footer-row a:hover {
+  color: var(--accent);
+}
+
+.btn-primary:focus,
+.btn-secondary:focus,
+.nav-link:focus,
+.navbar-brand:focus {
+  outline: 2px solid rgba(155, 226, 141, 0.8);
+  outline-offset: 3px;
+}
+
+@media (max-width: 991px) {
+  .hero-shell,
+  .download-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-visual {
+    min-height: 480px;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-shell {
+    width: min(100% - 22px, 1180px);
+    padding-top: 18px;
+  }
+
+  .stat-grid,
+  .feature-grid {
+    grid-template-columns: 1fr;
+  }
+
+.hero-copy {
+  padding-right: 0;
+}
+
+  .hero-brand-row {
+    width: 100%;
+  }
+
+  .hero-shell {
+    padding-top: 8px;
+  }
+
+  .hero-copy h1 {
+    max-width: 100%;
+  }
+}

@@ -1,0 +1,15 @@
+1. Permitted Use:
+- Personal and educational use.
+- Modify for learning or simulation.
+
+2. Prohibited Use:
+- Commercial use without permission.
+- Distribution of assets or code without authorization.
+
+3. Intellectual Property:
+- All scripts, assets, and models are protected.
+- Brand logos remain property of their respective owners.
+
+4. Liability:
+- No warranty is provided.
+- Creator is not responsible for damages from software use.

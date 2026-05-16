@@ -1,0 +1,96 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "SuperRealisticCarSimulator";
+}
+
+<section class="hero-shell">
+    <div class="hero-copy">
+        <div class="hero-brand-row">
+            <img class="hero-logo" src="~/images/logo.svg" alt="SuperRealisticCarSimulator logo" />
+            <div>
+                <p class="eyebrow">Made by Aarham</p>
+                <p class="brand-line">SuperRealisticCarSimulator</p>
+            </div>
+        </div>
+        <h1>SuperRealisticCarSimulator</h1>
+        <p class="lead">
+            A cinematic ASP.NET Core showcase for a realistic driving simulator, with forest roads,
+            traffic lighting, premium motion styling, and direct Windows EXE and ZIP downloads.
+        </p>
+
+        <div class="action-row">
+            <a class="btn-primary" href="@Model.DownloadExeUrl" download>Download EXE</a>
+            <a class="btn-secondary" href="@Model.DownloadZipUrl" download>Download ZIP</a>
+            <a class="btn-secondary" href="https://github.com/Aarham-Super/SuperRealisticCarSimulator" target="_blank" rel="noopener noreferrer">GitHub repo</a>
+            <a class="btn-secondary" href="#features">See features</a>
+        </div>
+
+        <div class="stat-grid">
+            <article>
+                <span class="stat-value">@Model.BuildSize</span>
+                <span class="stat-label">Website download package target</span>
+            </article>
+            <article>
+                <span class="stat-value">.NET 10</span>
+                <span class="stat-label">ASP.NET Core web app</span>
+            </article>
+            <article>
+                <span class="stat-value">@Model.CurrentYear</span>
+                <span class="stat-label">Copyright year</span>
+            </article>
+        </div>
+    </div>
+
+    <div class="hero-visual" aria-hidden="true">
+        <div class="visual-frame">
+            <img src="~/images/logo.svg" alt="" />
+            <div class="visual-tag">Realistic car showcase</div>
+        </div>
+        <div class="tree-strip"></div>
+    </div>
+</section>
+
+<section class="feature-section" id="features">
+    <div class="section-heading">
+        <p class="eyebrow">Simulator highlights</p>
+        <h2>Built to feel premium, fast, and grounded in realism.</h2>
+    </div>
+
+    <div class="feature-grid">
+        <article class="feature-card">
+            <h3>Forest roads</h3>
+            <p>Tree-lined scenery and natural color tones create a calm but detailed driving backdrop.</p>
+        </article>
+        <article class="feature-card">
+            <h3>Realistic driving feel</h3>
+            <p>Acceleration, braking, and handling are framed as a polished simulator experience.</p>
+        </article>
+        <article class="feature-card">
+            <h3>Download-first website</h3>
+            <p>A clean landing page with a direct build download, release messaging, and legal notes.</p>
+        </article>
+    </div>
+</section>
+
+<section class="download-panel">
+    <div>
+        <p class="eyebrow">Release package</p>
+        <h2>Ready for the real installer and source zip.</h2>
+        <p>
+            The current site exposes separate download endpoints for the Windows EXE and ZIP package,
+            so you can swap in the real game build later without changing the layout.
+        </p>
+    </div>
+    <div class="download-card">
+        <strong>SuperRealisticCarSimulator.exe</strong>
+        <span>Windows executable download</span>
+        <a class="btn-primary full-width" href="@Model.DownloadExeUrl" download>Download EXE</a>
+    </div>
+    <div class="download-card">
+        <strong>SuperRealisticCarSimulator.zip</strong>
+        <span>ZIP package download</span>
+        <span>Made by Aarham</span>
+        <a class="btn-primary full-width" href="@Model.DownloadZipUrl" download>Download ZIP</a>
+    </div>
+</section>

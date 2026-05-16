@@ -1,0 +1,4 @@
+- License grants personal, educational, or demo use.
+- Commercial use prohibited.
+- Violating terms terminates license.
+- Provided as-is with no warranty.

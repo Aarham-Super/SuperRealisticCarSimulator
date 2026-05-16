@@ -1,0 +1,13 @@
+All car brands, logos, and models are used for simulation purposes only. This project is not affiliated with, endorsed by, or sponsored by any real-world manufacturer. 
+
+Copyright:
+- All code and assets belong to the creator unless otherwise noted.
+- Real car brands and logos are trademarks of their owners.
+
+Usage:
+- For personal and educational use only.
+- No commercial redistribution without written consent.
+
+Disclaimer:
+- Provided as-is. The creator is not liable for damages or misuse.
+- Real-world driving should follow legal safety rules; this is a digital simulation.
