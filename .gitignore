@@ -1,4 +1,6 @@
 bin/
 obj/
 artifacts/
+publish/
+*.gz
 appsettings.json
